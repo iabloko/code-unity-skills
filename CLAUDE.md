@@ -63,3 +63,39 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+---
+
+## 5. Active Skills
+
+### Unity skills (always active)
+
+| Skill | When it applies |
+| --- | --- |
+| `unity-conventions` | Any C# file in a Unity project — naming, MonoBehaviour, serialization, UniTask, TMP, DOTween defaults |
+| `unity-architecture` | Designing or wiring a feature — DI (Zenject/VContainer), layering, State Machine, Orchestrator |
+| `unity-testing` | Any logic change — EditMode TDD first, PlayMode only when lifecycle is under test |
+| `unity-performance` | Any per-frame path or mobile/VR target — measure first, then fix GC/pooling/draw calls |
+| `unity-editor-scripting` | Editor tools, custom inspectors, PropertyDrawer — Odin first if present |
+| `unity-dotween` | Any value animating over time — DOTween Pro is the default tween engine |
+| `unity-unirx` | Reactive state binding or streams — only when UniRx is confirmed in `manifest.json` |
+| `unity-addressables` | Any runtime asset load — replaces `Resources.Load` and bare `[SerializeField]` prefab refs |
+
+### Engineering skills (always active)
+
+- `engineering-philosophy` — KISS, YAGNI, DRY, SOLID on every code decision.
+- `shell-discipline` — safe PowerShell/terminal usage.
+- `committing-changes` — no direct pushes to `main`, always feature branch + PR.
+- `running-tdd-cycles` — red→green→refactor discipline on every logic change.
+- `reviewing-changes` — five-pass review (code, security, architecture, acceptance, AI-native).
+- `designing-architecture` — requirements + library scan before implementing any new system.
+
+### Slash commands
+
+| Command | When to use |
+| --- | --- |
+| `/coding-skills:tdd` | Writing or fixing C# game logic — red-green-refactor |
+| `/coding-skills:design` | Before implementing a new game system |
+| `/coding-skills:review` | Before merging any branch — five-pass quality gate |
+| `/coding-skills:commit` | Creating commits and PRs |
+| `/coding-skills:pm` | Planning features via GitHub Issues |
