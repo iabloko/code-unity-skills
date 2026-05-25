@@ -1,0 +1,9 @@
+{
+  "name": "unity-skills",
+  "version": "0.1.0",
+  "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), editor scripting (Odin), Unity Test Framework, and performance.",
+  "author": {
+    "name": "Daniil"
+  },
+  "license": "MIT"
+}
