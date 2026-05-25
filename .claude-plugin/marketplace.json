@@ -16,25 +16,14 @@
       },
       "category": "development",
       "source": {
-        "source": {
-          "source": "github",
-          "repo": "iabloko/code-unity-skills"
-        },
+        "source": "github",
+        "repo": "iabloko/code-unity-skills"
+      },
       "homepage": "https://github.com/iabloko/code-unity-skills",
       "license": "MIT",
       "keywords": [
-        "unity",
-        "csharp",
-        "gamedev",
-        "zenject",
-        "vcontainer",
-        "odin",
-        "addressables",
-        "dotween",
-        "unirx",
-        "unitask",
-        "tmp",
-        "urp"
+        "unity", "csharp", "gamedev", "zenject", "vcontainer",
+        "odin", "addressables", "dotween", "unirx", "unitask", "tmp", "urp"
       ]
     }
   ]
