@@ -1,15 +1,26 @@
 {
-  "name": "unity-skills",
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "iabloko",
+  "description": "Unity-focused skill packs for Claude Code",
   "owner": {
-    "name": "Daniil"
+    "name": "Daniil",
+    "url": "https://github.com/iabloko"
   },
   "plugins": [
     {
       "name": "unity-skills",
-      "source": ".",
       "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), editor scripting (Odin), Unity Test Framework, performance, Addressables, DOTween Pro, and UniRx.",
-      "version": "0.1.0",
-      "category": "unity",
+      "author": {
+        "name": "Daniil",
+        "url": "https://github.com/iabloko"
+      },
+      "source": {
+        "source": "url",
+        "url": "https://github.com/iabloko/code-unity-skills.git"
+      },
+      "homepage": "https://github.com/iabloko/code-unity-skills",
+      "category": "development",
+      "license": "MIT",
       "keywords": [
         "unity",
         "csharp",
@@ -23,8 +34,7 @@
         "unitask",
         "tmp",
         "urp"
-      ],
-      "license": "MIT"
+      ]
     }
   ]
 }

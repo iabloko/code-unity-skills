@@ -1,9 +1,27 @@
 {
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "unity-skills",
   "version": "0.1.0",
   "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), editor scripting (Odin), Unity Test Framework, and performance.",
   "author": {
-    "name": "Daniil"
+    "name": "Daniil",
+    "url": "https://github.com/iabloko"
   },
-  "license": "MIT"
+  "homepage": "https://github.com/iabloko/code-unity-skills",
+  "repository": "https://github.com/iabloko/code-unity-skills",
+  "license": "MIT",
+  "keywords": [
+    "unity",
+    "csharp",
+    "gamedev",
+    "zenject",
+    "vcontainer",
+    "odin",
+    "addressables",
+    "dotween",
+    "unirx",
+    "unitask",
+    "tmp",
+    "urp"
+  ]
 }
