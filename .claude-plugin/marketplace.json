@@ -1,0 +1,30 @@
+{
+  "name": "unity-skills",
+  "owner": {
+    "name": "Daniil"
+  },
+  "plugins": [
+    {
+      "name": "unity-skills",
+      "source": ".",
+      "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), editor scripting (Odin), Unity Test Framework, performance, Addressables, DOTween Pro, and UniRx.",
+      "version": "0.1.0",
+      "category": "unity",
+      "keywords": [
+        "unity",
+        "csharp",
+        "gamedev",
+        "zenject",
+        "vcontainer",
+        "odin",
+        "addressables",
+        "dotween",
+        "unirx",
+        "unitask",
+        "tmp",
+        "urp"
+      ],
+      "license": "MIT"
+    }
+  ]
+}
