@@ -16,8 +16,8 @@
       },
       "category": "development",
       "source": {
-        "source": "github",
-        "repo": "iabloko/code-unity-skills"
+        "source": "git",
+        "url": "https://github.com/iabloko/code-unity-skills.git"
       },
       "homepage": "https://github.com/iabloko/code-unity-skills",
       "license": "MIT",
