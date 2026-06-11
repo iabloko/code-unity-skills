@@ -75,6 +75,8 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `unity-conventions` | Any C# file in a Unity project — naming, MonoBehaviour, serialization, UniTask, TMP, DOTween defaults |
 | `unity-architecture` | Designing or wiring a feature — DI (Zenject/VContainer), layering, State Machine, Orchestrator |
 | `unity-testing` | Any logic change — EditMode TDD first, PlayMode only when lifecycle is under test |
+| `unity-unitask` | Any async code — UniTask signatures, cancellation, PlayerLoop timing; replaces coroutines/Task |
+| `unity-ui` | Any Canvas/uGUI work — rebuild cost, raycast hygiene, passive View + Presenter, TMP |
 | `unity-performance` | Any per-frame path or mobile/VR target — measure first, then fix GC/pooling/draw calls |
 | `unity-editor-scripting` | Editor tools, custom inspectors, PropertyDrawer — Odin first if present |
 | `unity-dotween` | Any value animating over time — DOTween Pro is the default tween engine |
@@ -91,6 +93,8 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - `designing-architecture` — requirements + library scan before implementing any new system.
 
 ### Slash commands
+
+These commands are provided by the separate `coding-skills` plugin, not by `unity-skills`. They work only if that plugin is also installed; the underlying skills above ship with this plugin either way.
 
 | Command | When to use |
 | --- | --- |

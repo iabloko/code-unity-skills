@@ -34,6 +34,24 @@ If any of these are missing, ask before assuming.
 - Editor-only code lives under an `Editor/` folder with an editor-only `*.asmdef` (`includePlatforms: ["Editor"]`).
 - Tests live under `Tests/Editor` and `Tests/Runtime` with their own `*.asmdef` referencing `UnityEngine.TestRunner` and `UnityEditor.TestRunner`.
 
+## `.meta` hygiene
+
+Every file and folder under `Assets/` has a paired `.meta` holding its GUID; all asset references resolve by GUID. Agents editing the project outside the Unity editor are the main source of `.meta` drift.
+
+- Commit an asset and its `.meta` **together** — including the `.meta` of every new folder on the path.
+- Deleting or renaming an asset deletes/renames its `.meta` in the same change. A leftover `.meta` is an orphan; a missing one regenerates with a **new GUID** on next editor open, silently breaking every reference to the old one.
+- Never hand-edit or regenerate the GUID of an existing `.meta`; never copy a `.meta` between assets (duplicate GUIDs).
+- Files created outside the editor have no `.meta` yet — generate it by opening the editor or running any batchmode command (a headless test run per [[unity-testing]] does it), then commit the pair.
+
+Verify with the bundled checker; wire it into the pre-commit hook so it gates every commit:
+
+```sh
+bash <skills>/unity-conventions/scripts/check-meta.sh    # audit, run from the Unity project root
+echo 'bash "<abs-path-to>/check-meta.sh" || exit 1' >> .git/hooks/pre-commit
+```
+
+It flags `MISSING` (asset without `.meta`) and `ORPHAN` (`.meta` without asset), honors `.gitignore`, and skips paths Unity itself ignores (dot-prefixed, `~`-suffixed).
+
 ## MonoBehaviour
 
 - Cache component references in `Awake` / `OnEnable`; never call `GetComponent` in `Update`.
@@ -59,6 +77,7 @@ If any of these are missing, ask before assuming.
 - Use `UniTask.WhenAll` / `UniTask.WhenAny` instead of manual flag juggling.
 - For fire-and-forget on a Unity event, declare `async UniTaskVoid` and call with `.Forget()` — surfaces unhandled exceptions; never use `async void` (except for `UnityEvent`-bound handlers that the inspector wires up).
 - Avoid `.GetAwaiter().GetResult()` and `.Task.Wait()` — deadlocks under Unity's sync context.
+- See [[unity-unitask]] for full rules (cancellation ownership, PlayerLoop timing, coroutine migration).
 
 ## Text (default: TextMeshPro)
 
@@ -96,3 +115,4 @@ If any of these are missing, ask before assuming.
 - [ ] New scripts live in the correct `*.asmdef` (editor-only code is not pulled into runtime).
 - [ ] No new `public` field exists solely for Inspector exposure — use `[SerializeField] private`.
 - [ ] No `Debug.Log` left in hot paths.
+- [ ] Every added/renamed/deleted path under `Assets/` has its `.meta` change paired — `check-meta.sh` passes.

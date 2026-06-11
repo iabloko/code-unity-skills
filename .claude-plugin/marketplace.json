@@ -15,10 +15,7 @@
         "url": "https://github.com/iabloko"
       },
       "category": "development",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/iabloko/code-unity-skills.git"
-      },
+      "source": "./",
       "homepage": "https://github.com/iabloko/code-unity-skills",
       "license": "MIT",
       "keywords": [

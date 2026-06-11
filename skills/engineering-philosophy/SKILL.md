@@ -1,7 +1,6 @@
 ---
 name: engineering-philosophy
 description: Apply KISS, YAGNI, DRY, SOLID, fail-fast, be-brief on every code decision.
-alwaysApply: true
 ---
 
 ## Principles

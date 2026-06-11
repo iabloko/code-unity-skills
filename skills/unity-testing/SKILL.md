@@ -1,6 +1,6 @@
 ---
 name: unity-testing
-description: Write and run tests in Unity using the Unity Test Framework — EditMode for plain C# / domain logic, PlayMode for MonoBehaviour and scene behavior. Apply red-green-refactor TDD: write the failing test first, then the minimum code to pass. Use whenever adding or changing logic in a Unity project.
+description: "Write and run tests in Unity using the Unity Test Framework — EditMode for plain C# / domain logic, PlayMode for MonoBehaviour and scene behavior. Apply red-green-refactor TDD: write the failing test first, then the minimum code to pass. Use whenever adding or changing logic in a Unity project."
 ---
 
 # Unity Testing (Unity Test Framework)
@@ -140,7 +140,7 @@ public async Task Orchestrator_LoadsAndStarts()
 
 For each behavior change:
 
-1. **Red**: write the smallest failing EditMode test that pins the new behavior. Run it; verify it actually fails for the right reason.
+1. **Red**: write the smallest failing EditMode test that pins the new behavior. Run it (headless — see *Running tests* below, with `-testFilter` scoped to the new test); verify it actually fails for the right reason, not from a compile error.
 2. **Green**: write the minimum production code to make it pass — no extras (per CLAUDE.md "Simplicity First").
 3. **Refactor**: clean up only what you just wrote. Tests must stay green.
 
@@ -148,15 +148,34 @@ Don't write the production code first and then a confirming test — that test d
 
 ## Running tests
 
-- Editor UI: `Window > General > Test Runner`.
-- CLI:
+- Editor UI: `Window > General > Test Runner` — when the user is driving.
+- **Headless CLI — the default for agents.** Use the bundled runner from the Unity project root:
 
 ```sh
-Unity -batchmode -nographics -projectPath . -runTests -testPlatform EditMode -logFile -
-Unity -batchmode -projectPath . -runTests -testPlatform PlayMode -logFile -
+bash <skills>/unity-testing/scripts/run-tests.sh                                    # EditMode, full suite
+bash <skills>/unity-testing/scripts/run-tests.sh EditMode "Game.Feature.Tests.DamageCalculatorTests"
+bash <skills>/unity-testing/scripts/run-tests.sh PlayMode
 ```
 
-- PlayMode in batchmode requires `-nographics` to be **omitted** if the test needs rendering — most don't.
+The script locates the editor via `ProjectSettings/ProjectVersion.txt` + Unity Hub default install paths (`UNITY_PATH` env var overrides), refuses to run while the editor has the project open, writes NUnit XML + log into `TestResults/`, and prints a pass/fail summary with the full names of failed tests. Exit code `0` = green, `2` = test failures, anything else = run error.
+
+Raw CLI equivalent, when the script doesn't fit:
+
+```sh
+"$UNITY" -batchmode -nographics -projectPath . -runTests -testPlatform EditMode \
+    -testResults "$(pwd)/TestResults/results.xml" -logFile "$(pwd)/TestResults/run.log"
+```
+
+### Headless gotchas
+
+- **Never pass `-quit` together with `-runTests`** — it kills the editor before tests finish.
+- `-testResults` / `-logFile` must be **absolute** paths.
+- One editor instance per project: a present `Temp/UnityLockfile` means the editor (or another batch run) has the project open — the run fails immediately. Ask the user to close the editor; after a crash the lockfile may be stale.
+- Compile errors abort before any test runs: no results XML, nonzero exit — look for `error CS` in the log, fix, rerun.
+- First batch launch after asset changes triggers an import — allow a generous timeout (up to ~10 min on large projects); don't kill the process early.
+- `-testFilter` matches full names (`Namespace.Class.Method`; semicolon-separated; regex supported), `-testCategory` matches `[Category]` attributes. Filtered runs keep the red-green loop fast; always finish with the **full suite** before committing.
+- PlayMode: keep `-nographics` unless a test genuinely renders — most don't.
+- Side effect worth knowing: any batchmode launch imports new assets and generates their `.meta` files (see [[unity-conventions]] on `.meta` hygiene).
 
 ## Anti-patterns
 
@@ -173,4 +192,4 @@ Unity -batchmode -projectPath . -runTests -testPlatform PlayMode -logFile -
 - [ ] No `Thread.Sleep` in tests.
 - [ ] No new test depends on a hand-authored scene.
 - [ ] All created GameObjects are destroyed in `[TearDown]`.
-- [ ] `Test Runner` window is green locally before declaring done.
+- [ ] Full suite is green before declaring done — `run-tests.sh` exit code `0` (or Test Runner window when the user drives).

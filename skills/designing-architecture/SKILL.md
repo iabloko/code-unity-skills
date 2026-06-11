@@ -1,6 +1,6 @@
 ---
 name: designing-architecture
-description: Design pre-implementation architecture: components, libraries, data flow, schema.
+description: "Design pre-implementation architecture: components, libraries, data flow, schema."
 allowed-tools: Read, Grep, Glob, WebSearch, WebFetch, Bash(gh search repos *), Bash(gh repo view *), Bash(gh search code *), Bash(npm view *), Bash(pip show *), Bash(uv pip show *), Bash(uv tree *), Bash(cargo search *), Bash(cargo info *), Bash(go doc *), Bash(go list *)
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: reviewing-changes
-description: Five-pass review of a diff: code, security, architecture, acceptance, AI-native.
+description: "Five-pass review of a diff: code, security, architecture, acceptance, AI-native."
 allowed-tools: Read, Grep, Glob, Bash(git diff *), Bash(git log *), Bash(git show *), Bash(git status *), Bash(git rev-parse *), Bash(gh pr view *), Bash(gh pr diff *), Bash(gh pr list *), Bash(uv run ruff *), Bash(uv run mypy *), Bash(uv run pip-audit *), Bash(npm audit *), Bash(golangci-lint *), Bash(govulncheck *), Bash(gosec *), Bash(solhint *), Bash(forge fmt --check), WebSearch, WebFetch
 ---
 
