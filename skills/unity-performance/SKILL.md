@@ -26,7 +26,7 @@ In rough order of frequency-of-impact:
 
 ### 1. GC allocations per frame
 
-Any `_` next to a line in the Profiler's GC Alloc column on a per-frame path is a smell.
+Any nonzero value in the Profiler's GC Alloc column on a per-frame path is a smell.
 
 Common offenders:
 
@@ -35,13 +35,13 @@ Common offenders:
 - LINQ in hot paths (`Where`, `Select`, `OrderBy`) — replace with explicit loops.
 - `new Vector3(...)` in tight loops is fine (struct), but `new SomeClass(...)` per frame is not.
 - Closures that capture variables → delegate allocation. Use cached delegates or `Action`/`Func` fields.
-- `gameObject.tag == "Player"` allocates? No (`tag` getter is fine), but `CompareTag("Player")` is still preferred (avoids string allocation on some platforms).
+- `gameObject.tag` — the getter allocates a fresh managed string on every call (native→managed copy). Use `CompareTag("Player")`, which allocates nothing.
 - `GetComponents`/`GetComponentsInChildren` returning arrays — use the `List<T>` overload with a reusable list.
 - DOTween tweens / sequences built inside `Update` — construct on event or reuse with `SetAutoKill(false)` + `Restart()`. Raise `DOTween.SetTweensCapacity` instead of letting the pool grow at runtime (see [[unity-dotween]]).
 
 ### 2. Update-loop cost
 
-- Empty `Update` methods on disabled-by-tag MonoBehaviours **still cost** (Unity dispatches them). Remove `Update` if not needed.
+- Empty `Update` methods **still cost** even when the body does nothing — Unity pays the native→managed dispatch per instance, per frame. Remove `Update` if not needed.
 - Many objects ticking → one `UpdateManager` that ticks `IUpdatable`s. Especially worth it past ~100 instances.
 - Use `LateUpdate` for camera following, `FixedUpdate` only for physics — don't move things in `FixedUpdate` for non-physics reasons.
 
@@ -113,19 +113,25 @@ private void RefreshRenderers()
 ### `UnityEngine.Pool.ObjectPool<T>`
 
 ```csharp
-private readonly ObjectPool<Bullet> _pool = new(
-    createFunc: () => Instantiate(_bulletPrefab),
-    actionOnGet:  b => b.gameObject.SetActive(true),
-    actionOnRelease: b => b.gameObject.SetActive(false),
-    actionOnDestroy: b => Destroy(b.gameObject),
-    defaultCapacity: 32, maxSize: 256);
+private ObjectPool<Bullet> _pool;
+
+private void Awake()
+{
+    // field initializers can't reference instance members like _bulletPrefab
+    _pool = new ObjectPool<Bullet>(
+        createFunc: () => Instantiate(_bulletPrefab),
+        actionOnGet:  b => b.gameObject.SetActive(true),
+        actionOnRelease: b => b.gameObject.SetActive(false),
+        actionOnDestroy: b => Destroy(b.gameObject),
+        defaultCapacity: 32, maxSize: 256);
+}
 ```
 
 ### `CompareTag` over `==`
 
 ```csharp
 if (other.CompareTag("Enemy")) // ok
-if (other.tag == "Enemy")       // avoid (allocates string on some platforms)
+if (other.tag == "Enemy")       // avoid (tag getter allocates a managed string copy)
 ```
 
 ### `StringBuilder` for UI text

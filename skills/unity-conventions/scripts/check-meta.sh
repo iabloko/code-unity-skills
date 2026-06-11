@@ -14,7 +14,8 @@ if [[ ! -d Assets ]]; then
     exit 2
 fi
 
-PROBLEMS="$(git ls-files --cached --others --exclude-standard -- Assets | awk '
+# core.quotePath=false: emit non-ASCII paths raw, not C-quoted ("\320...")
+PROBLEMS="$(git -c core.quotePath=false ls-files --cached --others --exclude-standard -- Assets | awk '
     function visible(p,  n, parts, i) {
         n = split(p, parts, "/")
         for (i = 1; i <= n; i++)

@@ -83,20 +83,23 @@ Wire `Dispose` through the DI container's lifetime ([[unity-architecture]]).
 The bread-and-butter for state binding:
 
 ```csharp
-public sealed class Player : IPlayer
+public sealed class Player : IPlayer, IDisposable
 {
     public IReactiveProperty<int> Health { get; } = new ReactiveProperty<int>(100);
     public IReadOnlyReactiveProperty<bool> IsAlive => _isAlive;
-    private readonly ReactiveProperty<bool> _isAlive;
+    private readonly ReadOnlyReactiveProperty<bool> _isAlive;
 
     public Player()
     {
-        _isAlive = Health.Select(hp => hp > 0).ToReactiveProperty();
+        _isAlive = Health.Select(hp => hp > 0).ToReadOnlyReactiveProperty();
     }
+
+    public void Dispose() => _isAlive.Dispose(); // the derived property holds a live subscription to Health
 }
 ```
 
 - Expose `IReadOnlyReactiveProperty<T>` from interfaces — writes belong to the owner.
+- Derived properties (`ToReadOnlyReactiveProperty`) hold a subscription to their source — the owner must `Dispose` them; wire it through the DI lifetime ([[unity-architecture]]).
 - `ReactiveCollection<T>` / `ReactiveDictionary<TKey, TValue>` for observable collections (`ObserveAdd`, `ObserveRemove`, `ObserveCountChanged`).
 - `Value` getter/setter is non-observing; only `.Subscribe(...)` reacts.
 
@@ -141,8 +144,7 @@ Use these instead of declaring an `Update`/`OnTriggerEnter` method that immediat
 | `Where(p)`           | Filter                                                         |
 | `Select(f)`          | Map                                                            |
 | `DistinctUntilChanged()` | Suppress consecutive duplicates (often after `Select`)     |
-| `Throttle(ts)`       | Emit only after `ts` of silence (search box)                   |
-| `Debounce(ts)`       | Alias of `Throttle` in UniRx                                   |
+| `Throttle(ts)`       | Emit only after `ts` of silence (search box) — this is *debounce* semantics; UniRx has no `Debounce` method (that name is R3's) |
 | `ThrottleFirst(ts)`  | Emit first, ignore rest within window (anti-spam click)        |
 | `Sample(ts)`         | Emit latest value every `ts`                                   |
 | `CombineLatest(b)`   | Emit when any source changes, with the latest of each          |
@@ -156,8 +158,8 @@ Use these instead of declaring an `Update`/`OnTriggerEnter` method that immediat
 UniTask remains the default for one-shot async; bridge when needed:
 
 ```csharp
-// First emission, then complete (rxified one-shot)
-int hp = await player.Health.FirstAsync().ToUniTask(cancellationToken: ct);
+// First emission, then complete (rxified one-shot) — UniRx has First(), not Rx.NET's FirstAsync()
+int hp = await player.Health.First().ToUniTask(cancellationToken: ct);
 
 // Convert UniTask to single-value Observable (rare)
 IObservable<Level> levelLoad = LoadLevel(id).ToObservable();

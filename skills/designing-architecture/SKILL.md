@@ -1,7 +1,7 @@
 ---
 name: designing-architecture
 description: "Design pre-implementation architecture: components, libraries, data flow, schema."
-allowed-tools: Read, Grep, Glob, WebSearch, WebFetch, Bash(gh search repos *), Bash(gh repo view *), Bash(gh search code *), Bash(npm view *), Bash(pip show *), Bash(uv pip show *), Bash(uv tree *), Bash(cargo search *), Bash(cargo info *), Bash(go doc *), Bash(go list *)
+allowed-tools: Read, Grep, Glob, WebSearch, WebFetch, Bash(gh search repos *), Bash(gh repo view *), Bash(gh search code *), Bash(npm view *), Bash(openupm *), Bash(pip show *), Bash(uv pip show *), Bash(uv tree *), Bash(cargo search *), Bash(cargo info *), Bash(go doc *), Bash(go list *)
 ---
 
 ## Methodology
@@ -14,7 +14,7 @@ allowed-tools: Read, Grep, Glob, WebSearch, WebFetch, Bash(gh search repos *), B
 
 ### Phase 2 — Technology landscape scan
 
-4. **Discover candidates.** Search awesome-lists (`awesome-<language>`, `awesome-<domain>`), GitHub by topic, package registries (PyPI, npm, crates.io). For data layer questions, also DB-Engines and CNCF Landscape.
+4. **Discover candidates.** Search awesome-lists (`awesome-<language>`, `awesome-<domain>`), GitHub by topic, package registries (PyPI, npm, crates.io). For Unity projects: OpenUPM (`openupm search`), `awesome-unity`, and the Unity Asset Store — prefer UPM packages over `.unitypackage` imports (they version cleanly in `Packages/manifest.json`). For data layer questions, also DB-Engines and CNCF Landscape.
 5. **Evaluate each candidate** with consistent dimensions:
    - GitHub stars and trend, last commit, release cadence.
    - Open vs closed issue ratio.
@@ -138,7 +138,8 @@ Decisions that need user input before implementation begins.
 
 - `running-tdd-cycles` — receives the implementation plan from this skill.
 - `reviewing-changes` — verifies the implementation against this design.
-- `python-conventions` / `go-conventions` / `solidity-conventions` — language-specific tooling and idioms feed into the design.
+- `unity-conventions` / `unity-architecture` — C#/Unity idioms, DI containers, and layering feed into the design.
+- `python-conventions` / `go-conventions` / `solidity-conventions` (separate coding-skills plugin) — other languages' tooling and idioms.
 - `engineering-philosophy` — KISS, YAGNI, Use Libraries, No Magic dominate during design.
 
 ## Reference

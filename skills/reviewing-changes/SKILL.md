@@ -10,7 +10,7 @@ Always run the five passes in order. Findings flow into one combined verdict.
 
 ### 1. Read the rules
 
-Before any pass, internalise the language-rule skill that matches the diff (python-conventions, go-conventions, solidity-conventions, …) and engineering-philosophy. The rule skills are the source of truth — don't invent additional standards.
+Before any pass, internalise the language-rule skill that matches the diff and engineering-philosophy. For C# in a Unity project that is `unity-conventions` plus the `unity-*` skills the diff touches (architecture, testing, performance, ui, …); for other languages, the matching conventions skill from the separate coding-skills plugin (python-conventions, go-conventions, solidity-conventions, …). The rule skills are the source of truth — don't invent additional standards.
 
 ### 2. See the change
 
@@ -34,7 +34,7 @@ Check, in order:
 - **SOLID violations** — Single Responsibility first; flag classes/files that grew a second responsibility.
 - **Naming, readability, complexity** — function lengths, parameter lists, deeply nested conditionals, clever one-liners that hide intent.
 - **Test coverage** — was the change tested? If TDD discipline applied, was the failing test committed first?
-- **Tooling compliance** — ruff/mypy strict for Python, golangci-lint for Go, solhint:all for Solidity, forge fmt --check for Solidity formatting.
+- **Tooling compliance** — for C# in Unity: the project compiles and EditMode tests pass headless (`run-tests.sh` from `unity-testing`), Roslyn-analyzer warnings honored where the project configures them; ruff/mypy strict for Python, golangci-lint for Go, solhint:all + forge fmt --check for Solidity.
 - **Configuration safety** — production timeouts, connection pools, missing retries, missing rate limits.
 
 ### 4. Pass 2 — Security audit
@@ -75,8 +75,6 @@ Does the diff actually solve the contract — linked GitHub issue, PR descriptio
 - **Partial** — diff covers some required behaviours but misses others.
 - **Overreach** — diff includes changes the issue did not request.
 
-See `agents/acceptance-auditor.md` for the full procedure.
-
 ### 7. Pass 5 — AI-Native-Coding Practices
 
 Validates the diff and the surrounding project against the empirically-grounded rubric for working with AI coding agents. Eight rules, citation-grounded:
@@ -90,7 +88,7 @@ Validates the diff and the surrounding project against the empirically-grounded 
 - **R7** — Minimize context: delete, don't tombstone. Every line in always-loaded files costs every turn — remove rather than mark removed.
 - **R8** — Mechanical-rubric subset belongs in CI; bundled templates ship with the plugin.
 
-The rubric, with citations, lives at `reference/ai-native-rubric.md`. The mechanical-check templates ship at `reference/ai-native-templates/`. See `agents/ai-native-reviewer.md` for the full procedure.
+The rubric, with citations, lives at `reference/ai-native-rubric.md`. The mechanical-check templates ship at `reference/ai-native-templates/`.
 
 ## Output
 
@@ -140,12 +138,4 @@ For each individual finding:
 - [reference/owasp-checklist.md](reference/owasp-checklist.md) — canonical OWASP Top 10 mapping with attack vectors and fix patterns.
 - [reference/architecture-map-pattern.md](reference/architecture-map-pattern.md) — the optional `docs/architecture.md` convention this skill expects.
 
-The live subagent shims that wrap this skill for parallel execution live one level up:
-
-- `agents/code-reviewer.md` — Pass 1 (code quality)
-- `agents/security-auditor.md` — Pass 2 (security)
-- `agents/architect-review.md` — Pass 3 (architecture)
-- `agents/acceptance-auditor.md` — Pass 4 (acceptance / intent)
-- `agents/ai-native-reviewer.md` — Pass 5 (AI-native-coding practices)
-
-Each is a thin shim that reads this `SKILL.md` (and, for Pass 5, also `reference/ai-native-rubric.md`) and applies its scoped pass; the `/coding-skills:review` slash command spawns the five in parallel under `model: opus`.
+The subagent shims that run these passes in parallel (`code-reviewer`, `security-auditor`, `architect-review`, `acceptance-auditor`, `ai-native-reviewer`) and the `/coding-skills:review` slash command ship with the separate coding-skills plugin. Without it, run the five passes sequentially in-session — the procedure above is self-contained.

@@ -13,10 +13,22 @@ Before writing code, run these checks once per session and cache the result:
 
 - `Packages/manifest.json` → identify Unity version constraints and which third-party packages are present (Zenject, VContainer, Odin, UniTask, R3, etc.).
 - `Assets/**/*.asmdef` → know the assembly boundaries; new scripts must land in an assembly that already references the types they use.
-- `ProjectSettings/ProjectVersion.txt` → Unity editor version.
+- `ProjectSettings/ProjectVersion.txt` → Unity editor version — this caps the C# language version (see table below).
 - Render pipeline: look for `UniversalRenderPipelineAsset` or `HDRenderPipelineAsset` assets, or the `com.unity.render-pipelines.universal` package.
 
 If any of these are missing, ask before assuming.
+
+## C# language version ceiling
+
+Unity's compiler is pinned per editor version — write to the ceiling, not to the latest C# you know:
+
+| Unity version | C# | Not available (do not write) |
+| --- | --- | --- |
+| 2020.3 LTS | 8.0 | records, `init`, target-typed `new`, pattern-matching relational/`and`/`or` |
+| 2021.2 – 2022.3 LTS | 9.0 | file-scoped namespaces, global usings (C# 10); `required`, raw strings (C# 11); primary constructors, collection expressions `[..]` (C# 12) |
+| Unity 6 (6000.x) | 9.0 | same ceiling — Unity has not moved past C# 9 |
+
+Even within C# 9, **covariant return types and module initializers don't work** — they need runtime support Unity's profile lacks. When unsure whether a feature exists in the project's ceiling, the fast check is `compile-check.sh` (below).
 
 ## Naming
 
@@ -43,14 +55,23 @@ Every file and folder under `Assets/` has a paired `.meta` holding its GUID; all
 - Never hand-edit or regenerate the GUID of an existing `.meta`; never copy a `.meta` between assets (duplicate GUIDs).
 - Files created outside the editor have no `.meta` yet — generate it by opening the editor or running any batchmode command (a headless test run per [[unity-testing]] does it), then commit the pair.
 
-Verify with the bundled checker; wire it into the pre-commit hook so it gates every commit:
+Per-commit gating is already handled: the `committing-changes` pre-commit hook (installed by its `install-hooks.sh`) checks staged `.meta` pairing on every commit. The bundled checker is the **full-tree audit** — run it on demand or in CI:
 
 ```sh
-bash <skills>/unity-conventions/scripts/check-meta.sh    # audit, run from the Unity project root
-echo 'bash "<abs-path-to>/check-meta.sh" || exit 1' >> .git/hooks/pre-commit
+bash <skills>/unity-conventions/scripts/check-meta.sh    # from the Unity project root
 ```
 
 It flags `MISSING` (asset without `.meta`) and `ORPHAN` (`.meta` without asset), honors `.gitignore`, and skips paths Unity itself ignores (dot-prefixed, `~`-suffixed).
+
+## Compile check (headless)
+
+The fastest feedback loop after editing C# — no tests, just a script-compilation pass:
+
+```sh
+bash <skills>/unity-conventions/scripts/compile-check.sh    # from the Unity project root
+```
+
+Locates the editor the same way as `run-tests.sh` (`ProjectVersion.txt` + Hub paths, `UNITY_PATH` override), refuses to run while the editor has the project open, and prints deduplicated `error CS*` lines on failure. Exit `0` = compiles clean. Side effect: imports new assets and generates their `.meta` files — run it after creating files outside the editor, then commit the asset+`.meta` pairs. Use it between edits; escalate to the full test run ([[unity-testing]]) before declaring a change done.
 
 ## MonoBehaviour
 

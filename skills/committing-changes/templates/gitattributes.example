@@ -14,4 +14,12 @@ Gemfile.lock        linguist-generated=true
 **/*_pb2.py         linguist-generated=true
 **/*_pb2_grpc.py    linguist-generated=true
 
+# Unity — editor-generated YAML; collapse in PR diffs, keep out of language stats
+*.meta              linguist-generated=true
+*.unity             linguist-generated=true
+*.prefab            linguist-generated=true
+*.asset             linguist-generated=true
+*.anim              linguist-generated=true
+*.controller        linguist-generated=true
+
 vendor/**           linguist-vendored=true

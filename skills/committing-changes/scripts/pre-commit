@@ -8,6 +8,60 @@ set -e
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
+# ── Unity ──────────────────────────────────────────────────────────────────
+# Gate staged .meta pairing only (fast, scoped to this commit). The full-tree
+# audit lives in unity-conventions/scripts/check-meta.sh.
+if [[ -f "ProjectSettings/ProjectVersion.txt" ]]; then
+    echo "→ .meta pairing (staged files under Assets/)"
+    META_FAIL=0
+
+    in_index() { git ls-files --cached --error-unmatch "$1" > /dev/null 2>&1; }
+
+    require_dir_metas() {
+        local dir
+        dir="$(dirname "$1")"
+        while [[ "$dir" != "Assets" && "$dir" != "." && "$dir" != "/" ]]; do
+            if ! in_index "$dir.meta"; then
+                echo "  missing (stage it): $dir.meta"
+                META_FAIL=1
+            fi
+            dir="$(dirname "$dir")"
+        done
+    }
+
+    while IFS=$'\t' read -r status p1 p2; do
+        path="${p2:-$p1}"   # for renames/copies p2 is the new path
+        case "$path" in Assets/*) ;; *) continue ;; esac
+        case "/$path" in */.*) continue ;; esac   # Unity ignores dot-paths
+        case "$path"  in *~|*~/*) continue ;; esac # ...and '~'-suffixed ones
+        if [[ "$path" == *.meta ]]; then continue; fi
+
+        case "$status" in
+            A*|R*|C*)
+                if ! in_index "$path.meta"; then
+                    echo "  missing (stage it): $path.meta"
+                    META_FAIL=1
+                fi
+                require_dir_metas "$path"
+                ;;
+        esac
+
+        # a deleted/renamed-away asset must not leave its .meta behind
+        old=""
+        case "$status" in D*|R*) old="$p1" ;; esac
+        if [[ -n "$old" && "$old" == Assets/* && "$old" != *.meta ]] && in_index "$old.meta"; then
+            echo "  orphan (delete it): $old.meta"
+            META_FAIL=1
+        fi
+    done < <(git -c core.quotePath=false diff --cached --name-status)
+
+    if [[ $META_FAIL -ne 0 ]]; then
+        echo "✗ .meta pairing violations — commit blocked."
+        exit 1
+    fi
+    echo "✓ .meta pairing ok"
+fi
+
 # ── Python (uv) ────────────────────────────────────────────────────────────
 if [[ -f "pyproject.toml" ]] && command -v uv &>/dev/null; then
     echo "→ ruff format"

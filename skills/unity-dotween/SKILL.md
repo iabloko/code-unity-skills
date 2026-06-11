@@ -15,7 +15,7 @@ Pair with [[unity-conventions]] (UniTask default — tweens await via `ToUniTask
 - `DOTween.dll` + `DOTweenPro.dll` (or compiled-from-source) in `Assets/Plugins/Demigiant/`.
 - `Assets/Resources/DOTweenSettings.asset` — global capacity / safety mode settings.
 - `Packages/manifest.json` for `com.demigiant.dotween` (if installed via UPM mirror) or treat as in-`Assets` plugin otherwise.
-- UniTask DOTween integration: `Cysharp.Threading.Tasks.DOTween` assembly — gives you `tween.ToUniTask(cancellationToken: ct)`. Expect it to be present alongside UniTask.
+- UniTask DOTween integration: the `UniTask.DOTween` assembly (namespace stays `Cysharp.Threading.Tasks`) — gives you `tween.ToUniTask(cancellationToken: ct)`. Expect it to be present alongside UniTask.
 
 If DOTween is present but **not** the Pro version (no `DOTweenPro/` folder), don't write code that uses Pro-only features (`DOText` on TMP, `DOTweenAnimation` visual sequences, path editor). Ask before promoting a Pro feature.
 

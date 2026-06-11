@@ -1,7 +1,7 @@
 ---
 name: running-tdd-cycles
 description: Drive strict red-green-refactor TDD discipline on any code change, any language.
-allowed-tools: Read, Edit, Write, Grep, Glob, Bash(pytest *), Bash(uv run pytest *), Bash(npm test *), Bash(npm run test *), Bash(npx vitest *), Bash(npx jest *), Bash(go test *), Bash(cargo test *), Bash(rspec *), Bash(mvn test *), Bash(gradle test *), Bash(forge test *), Bash(forge coverage *), Bash(git status *), Bash(git diff *), Bash(git add *), Bash(git commit *)
+allowed-tools: Read, Edit, Write, Grep, Glob, Bash(pytest *), Bash(uv run pytest *), Bash(npm test *), Bash(npm run test *), Bash(npx vitest *), Bash(npx jest *), Bash(go test *), Bash(cargo test *), Bash(rspec *), Bash(mvn test *), Bash(gradle test *), Bash(forge test *), Bash(forge coverage *), Bash(bash *run-tests.sh*), Bash(bash *compile-check.sh*), Bash(git status *), Bash(git diff *), Bash(git add *), Bash(git commit *)
 ---
 
 ## Loop
@@ -31,6 +31,7 @@ Always one requirement per cycle. If the cycle feels big, the requirement was to
 
 ### Framework cues
 
+- **C# / Unity (Unity Test Framework)** — EditMode-first per unity-testing; `[TestCase]` for multiple cases. Run headless: `bash <skills>/unity-testing/scripts/run-tests.sh EditMode "<Namespace.Class.Method>"` for the active cycle, full suite before commit; between edits, `bash <skills>/unity-conventions/scripts/compile-check.sh` is the fast "does it compile" gate. No property-based library is bundled — example-based tests.
 - **Python (pytest)** — fixtures with explicit scopes, `pytest.mark.parametrize` for multiple cases, `hypothesis` for properties.
 - **JS/TS (Vitest/Jest)** — `vi.fn()` / `jest.fn()` mocks; `@testing-library/*` for components; `fast-check` for properties.
 - **Go** — table-driven tests with subtests via `t.Run(name, func(t *testing.T) {...})`; `t.Parallel()` where safe.
@@ -77,6 +78,7 @@ If the discipline breaks: stop, identify the violated phase, revert to the last 
 
 Quick exploration belongs in a gitignored scratch file, not in production code or in the test suite:
 
+- C# (Unity) → a throwaway `[Test]` in the feature's EditMode test assembly, run via the headless runner with a `-testFilter`; delete before commit (see unity-testing).
 - Python → `test.py` (see python-conventions and `reference/scratch-testing.md`).
 - Go → `test.go` with `//go:build scratch` tag (see go-conventions).
 - Solidity → `script/Scratch.s.sol` or `chisel` REPL (see solidity-conventions).
@@ -87,7 +89,8 @@ Never use inline heredocs (`uv run python << EOF`, `go run -`, `forge script --v
 
 - `committing-changes` — commit after every successful GREEN or REFACTOR phase.
 - `reviewing-changes` — final pass after the loop ends.
-- `python-conventions` / `go-conventions` / `solidity-conventions` — language-specific test runner setup.
+- `unity-testing` — C#/Unity test-runner setup (EditMode vs PlayMode, asmdef layout, headless CLI).
+- `python-conventions` / `go-conventions` / `solidity-conventions` (separate coding-skills plugin) — other languages' test runner setup.
 - `engineering-philosophy` — Small Steps, Investigate-Don't-Mask, KISS, YAGNI all apply directly.
 
 ## Reference

@@ -45,6 +45,8 @@ EditMode `*.asmdef` reference essentials:
 
 PlayMode `*.asmdef`: same as above minus `includePlatforms` (so it runs in players too if you want device runs) and with `UnityEngine.TestRunner` referenced.
 
+Ready-to-paste JSON for all four assembly kinds (runtime, editor-only, EditMode tests, PlayMode tests), with the NUnit `precompiledReferences` gotcha handled: [reference/asmdef-templates.md](reference/asmdef-templates.md).
+
 ## EditMode test pattern
 
 ```csharp
@@ -119,7 +121,7 @@ UniTask is the default async type in this user's projects — write async tests 
 public async Task Orchestrator_LoadsAndStarts()
 {
     var orchestrator = new StartLevelOrchestrator(saveStub, loaderStub, analyticsStub);
-    await orchestrator.Execute(levelId: 3, CancellationToken.None);
+    await orchestrator.ExecuteAsync(levelId: 3, CancellationToken.None);
     Assert.AreEqual(3, loaderStub.LastLoadedLevelId);
 }
 ```
@@ -176,6 +178,7 @@ Raw CLI equivalent, when the script doesn't fit:
 - `-testFilter` matches full names (`Namespace.Class.Method`; semicolon-separated; regex supported), `-testCategory` matches `[Category]` attributes. Filtered runs keep the red-green loop fast; always finish with the **full suite** before committing.
 - PlayMode: keep `-nographics` unless a test genuinely renders — most don't.
 - Side effect worth knowing: any batchmode launch imports new assets and generates their `.meta` files (see [[unity-conventions]] on `.meta` hygiene).
+- When there's no results XML and the log is all you have: [reference/unity-logs.md](reference/unity-logs.md) — default log locations per OS and the grep patterns that matter.
 
 ## Anti-patterns
 

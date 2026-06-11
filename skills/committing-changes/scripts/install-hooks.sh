@@ -10,7 +10,7 @@ mkdir -p "$HOOKS_DIR"
 
 CHANGED=0
 
-for HOOK in pre-push commit-msg; do
+for HOOK in pre-commit pre-push commit-msg; do
     if [[ -f "$HOOKS_DIR/$HOOK" ]] && diff -q "$SCRIPT_DIR/$HOOK" "$HOOKS_DIR/$HOOK" > /dev/null 2>&1; then
         continue
     fi

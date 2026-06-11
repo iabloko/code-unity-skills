@@ -11,7 +11,7 @@ allowed-tools: Read, Edit, Write, Bash(git status *), Bash(git diff *), Bash(git
    ```
    bash <skills>/committing-changes/scripts/install-hooks.sh
    ```
-   This copies `commit-msg` and `pre-push` into `.git/hooks/` and makes them executable. Idempotent.
+   This copies `pre-commit`, `commit-msg`, and `pre-push` into `.git/hooks/` and makes them executable. Idempotent.
 
    Then install the PR-size CI workflow:
    ```
@@ -25,7 +25,7 @@ allowed-tools: Read, Edit, Write, Bash(git status *), Bash(git diff *), Bash(git
    ```
    Valid `type` prefixes: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `infra`, `ai-native`.
 
-3. **Auto-fix before commit.** Run the project's linter/formatter (e.g., `ruff format && ruff check` for Python, `golangci-lint run` for Go, `forge fmt && solhint` for Solidity). The pre-commit hook (if installed) runs the project's full quality gate.
+3. **Auto-fix before commit.** Run the project's linter/formatter (e.g., `ruff format && ruff check` for Python, `golangci-lint run` for Go, `forge fmt && solhint` for Solidity). The pre-commit hook (if installed) runs the project's full quality gate. For Unity projects the hook gates staged `.meta` pairing; the full quality gate — a headless EditMode run (`run-tests.sh` from unity-testing) — is too slow per commit, so run it before pushing / opening the PR.
 
 4. **Commit & push.**
    ```
@@ -40,6 +40,10 @@ allowed-tools: Read, Edit, Write, Bash(git status *), Bash(git diff *), Bash(git
    git merge origin/main
    ```
    Resolve conflicts; commit the merge; push.
+   In Unity projects, resolve `.unity`/`.prefab`/`.asset` conflicts with `git mergetool` (Unity SmartMerge) instead of hand-editing the YAML. One-time setup per repo:
+   ```
+   bash <skills>/committing-changes/scripts/setup-unityyamlmerge.sh
+   ```
 
 6. **PR creation** (first push only).
    ```
@@ -83,12 +87,13 @@ Each rule traces to a specific failure mode:
 ## Reference
 
 - [scripts/commit-msg](scripts/commit-msg) — subject-line rules enforcer.
-- [scripts/pre-commit](scripts/pre-commit) — runs project's lint/format/test before commit.
+- [scripts/pre-commit](scripts/pre-commit) — runs project's lint/format/test before commit; in Unity projects also gates staged `.meta` pairing.
 - [scripts/pre-push](scripts/pre-push) — blocks direct push to `main`/`master`.
 - [scripts/install-hooks.sh](scripts/install-hooks.sh) — idempotent installer.
 - [templates/pr-size.yml](templates/pr-size.yml) — GitHub Actions workflow that labels PR size and fails when >1000 changed lines (excluding tests, docs, lockfiles, generated).
 - [templates/gitattributes.example](templates/gitattributes.example) — `linguist-generated`/`linguist-vendored` entries appended to `.gitattributes` so GitHub collapses generated files in PR diffs.
 - [scripts/install-pr-size-workflow.sh](scripts/install-pr-size-workflow.sh) — idempotent installer for the workflow + `.gitattributes` block.
+- [scripts/setup-unityyamlmerge.sh](scripts/setup-unityyamlmerge.sh) — configures Unity SmartMerge as the repo's mergetool for scene/prefab/asset YAML conflicts.
 - [reference/commit-md-original.md](reference/commit-md-original.md) — original Claude-Code `commit.md` command verbatim.
 - [reference/git-rule.md](reference/git-rule.md) — original `rules/git.md` verbatim.
 - [reference/hook-troubleshooting.md](reference/hook-troubleshooting.md) — common failure modes + fixes.

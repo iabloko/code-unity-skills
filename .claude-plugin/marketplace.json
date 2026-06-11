@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "unity-skills",
-      "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), editor scripting (Odin), Unity Test Framework, performance, Addressables, DOTween Pro, and UniRx.",
+      "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), UniTask async, uGUI/TMP UI, testing (Unity Test Framework + headless CLI runner), performance, Addressables, DOTween Pro, UniRx, and editor scripting (Odin).",
       "author": {
         "name": "Daniil",
         "url": "https://github.com/iabloko"
@@ -20,7 +20,7 @@
       "license": "MIT",
       "keywords": [
         "unity", "csharp", "gamedev", "zenject", "vcontainer",
-        "odin", "addressables", "dotween", "unirx", "unitask", "tmp", "urp"
+        "odin", "addressables", "dotween", "unirx", "unitask", "ugui", "tmp", "urp"
       ]
     }
   ]

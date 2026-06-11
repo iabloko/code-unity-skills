@@ -44,7 +44,7 @@ public sealed class EnemySpawner : MonoBehaviour
 
 ```csharp
 var handle = Addressables.LoadAssetsAsync<EnemyConfig>("enemies", _ => { });
-var configs = await handle.ToUniTask(); // requires Cysharp.Threading.Tasks.Addressables
+var configs = await handle.ToUniTask(); // requires the UniTask.Addressables integration assembly
 // ... use configs ...
 Addressables.Release(handle); // release exactly once when done
 ```

@@ -7,6 +7,7 @@ description: Shell discipline — one command per call, no inline env vars, gh a
 
 - **One command per call** — keep commands small, readable, and atomic. Don't chain with `&&`, `;`, or `cd dir && command`. Use separate calls — first `cd`, then the command.
 - **No inline env vars** — don't use `VAR=value command`. Set env separately or use proper auth tools.
+- **Shell-agnostic** — the same rules apply in PowerShell: no `;` chaining, no `$env:VAR = 'x'; command` one-liners.
 
 ## Git Auth
 
@@ -18,7 +19,8 @@ Each chained command is one opaque action to the permission layer; splitting the
 
 ## Prerequisites
 
-- A POSIX shell (bash or zsh).
+- Any shell — bash/zsh or PowerShell; the rules above are shell-agnostic.
+- On Windows, the `*.sh` helper scripts bundled with these skills (git hooks, `run-tests.sh`, `check-meta.sh`) run under Git Bash, which ships with Git for Windows — invoke them as `bash <script>`.
 - For the Git Auth rule: `gh` CLI installed and authenticated.
 
 ## Failure modes

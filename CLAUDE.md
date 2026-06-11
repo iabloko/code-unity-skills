@@ -68,7 +68,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 5. Active Skills
 
-### Unity skills (always active)
+### Unity skills (auto-activated when relevant)
 
 | Skill | When it applies |
 | --- | --- |
@@ -82,11 +82,12 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `unity-dotween` | Any value animating over time — DOTween Pro is the default tween engine |
 | `unity-unirx` | Reactive state binding or streams — only when UniRx is confirmed in `manifest.json` |
 | `unity-addressables` | Any runtime asset load — replaces `Resources.Load` and bare `[SerializeField]` prefab refs |
+| `unity-build` | Release-affecting changes — headless player build, Addressables content, IL2CPP/stripping |
 
-### Engineering skills (always active)
+### Engineering skills (auto-activated when relevant; the principles apply to every code change)
 
 - `engineering-philosophy` — KISS, YAGNI, DRY, SOLID on every code decision.
-- `shell-discipline` — safe PowerShell/terminal usage.
+- `shell-discipline` — safe shell usage (PowerShell or bash): one command per call, no inline env vars.
 - `committing-changes` — no direct pushes to `main`, always feature branch + PR.
 - `running-tdd-cycles` — red→green→refactor discipline on every logic change.
 - `reviewing-changes` — five-pass review (code, security, architecture, acceptance, AI-native).
