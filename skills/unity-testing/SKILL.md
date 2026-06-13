@@ -114,20 +114,21 @@ public sealed class EnemySpawnerPlayModeTests
 
 ## Async / UniTask tests (default)
 
-UniTask is the default async type in this user's projects — write async tests as `UniTask`-returning methods unless a third-party rule says otherwise.
+UniTask is the default async type in this user's projects, but **the Unity Test Framework does not await `UniTask` directly.** Its runner drives tests as coroutines: `[UnityTest]` returns `IEnumerator` — in PlayMode it runs as a real coroutine, in EditMode it's pumped by the `EditorApplication.update` loop. NUnit only knows how to await `System.Threading.Tasks.Task`, never a `UniTask`. So bridge the async body into the coroutine runner with `UniTask.ToCoroutine`:
 
 ```csharp
-[Test]
-public async Task Orchestrator_LoadsAndStarts()
+[UnityTest]
+public IEnumerator Orchestrator_LoadsAndStarts() => UniTask.ToCoroutine(async () =>
 {
     var orchestrator = new StartLevelOrchestrator(saveStub, loaderStub, analyticsStub);
     await orchestrator.ExecuteAsync(levelId: 3, CancellationToken.None);
     Assert.AreEqual(3, loaderStub.LastLoadedLevelId);
-}
+});
 ```
 
-- NUnit's runner awaits `Task`-returning tests; UniTask integrates via `UniTask.ToCoroutine()` for older runners, but modern Unity Test Framework awaits `UniTask` directly.
-- Use `[UnityTest] public IEnumerator Foo() => UniTask.ToCoroutine(async () => { ... });` when the test must drive Unity's frame loop (e.g. PlayMode with `UniTask.Yield()`).
+- `[UnityTest] public IEnumerator Foo() => UniTask.ToCoroutine(async () => { ... });` is the canonical async-test shape — it works in both EditMode and PlayMode, and is required whenever the body awaits anything that yields (`UniTask.Yield()`, `UniTask.Delay`, a frame-driven operation).
+- **Never** write `[UnityTest] async UniTask` or `[Test] async UniTask` — the runner won't await the `UniTask`, so the test reports green *without running its assertions* (a false pass). This is the trap `ToCoroutine` exists to avoid.
+- `[Test] public async Task Foo()` is also valid (NUnit awaits a returned `Task`), and you may `await` a `UniTask` inside it — fine for synchronously-completing logic, but anything that actually yields a frame must use the `[UnityTest]` + `ToCoroutine` form above. When unsure, default to `[UnityTest]` + `ToCoroutine`.
 - Don't use `.GetAwaiter().GetResult()` or `.Task.Wait()` — deadlocks under Unity's sync context.
 - Pass `CancellationToken.None` from tests explicitly; never let production code rely on a default `default(CancellationToken)`.
 
@@ -151,7 +152,7 @@ Don't write the production code first and then a confirming test — that test d
 ## Running tests
 
 - Editor UI: `Window > General > Test Runner` — when the user is driving.
-- **Headless CLI — the default for agents.** Use the bundled runner from the Unity project root:
+- **Headless CLI — the default for agents.** Use the bundled runner from the Unity project root (`<skills>` = this plugin's `skills/` directory — the folder that holds this skill's own folder; `./skills/` in the source repo):
 
 ```sh
 bash <skills>/unity-testing/scripts/run-tests.sh                                    # EditMode, full suite

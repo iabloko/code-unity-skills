@@ -55,7 +55,7 @@ Every file and folder under `Assets/` has a paired `.meta` holding its GUID; all
 - Never hand-edit or regenerate the GUID of an existing `.meta`; never copy a `.meta` between assets (duplicate GUIDs).
 - Files created outside the editor have no `.meta` yet — generate it by opening the editor or running any batchmode command (a headless test run per [[unity-testing]] does it), then commit the pair.
 
-Per-commit gating is already handled: the `committing-changes` pre-commit hook (installed by its `install-hooks.sh`) checks staged `.meta` pairing on every commit. The bundled checker is the **full-tree audit** — run it on demand or in CI:
+Per-commit gating is already handled: the `committing-changes` pre-commit hook (installed by its `install-hooks.sh`) checks staged `.meta` pairing on every commit. The bundled checker is the **full-tree audit** — run it on demand or in CI (`<skills>` = this plugin's `skills/` directory — the folder that holds this skill's own folder; `./skills/` in the source repo):
 
 ```sh
 bash <skills>/unity-conventions/scripts/check-meta.sh    # from the Unity project root

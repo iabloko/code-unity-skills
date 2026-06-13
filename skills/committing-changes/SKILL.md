@@ -7,7 +7,7 @@ allowed-tools: Read, Edit, Write, Bash(git status *), Bash(git diff *), Bash(git
 ## Workflow
 
 1. **Install hooks** (once per repo).
-   From inside the repo, run the installer that ships with this skill:
+   From inside the repo, run the installer that ships with this skill (`<skills>` = this plugin's `skills/` directory — the folder that holds this skill's own folder; `./skills/` in the source repo):
    ```
    bash <skills>/committing-changes/scripts/install-hooks.sh
    ```

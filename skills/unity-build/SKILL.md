@@ -23,7 +23,7 @@ bash <skills>/unity-build/scripts/build-player.sh Win64
 bash <skills>/unity-build/scripts/build-player.sh Linux64 /abs/out/Game.x86_64
 ```
 
-Same conventions as `run-tests.sh`: editor discovery via `ProjectVersion.txt` + Hub paths (`UNITY_PATH` override), refuses to run while the editor has the project open, log under `Logs/`, deduplicated `error CS*` on failure, exit `0` = build succeeded.
+`<skills>` is this plugin's `skills/` directory — the folder that holds this skill's own folder (`./skills/` in the source repo). Same conventions as `run-tests.sh`: editor discovery via `ProjectVersion.txt` + Hub paths (`UNITY_PATH` override), refuses to run while the editor has the project open, log under `Logs/`, deduplicated `error CS*` on failure, exit `0` = build succeeded.
 
 ## Android / iOS / Addressables — `-executeMethod`
 

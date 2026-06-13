@@ -31,7 +31,7 @@ Always one requirement per cycle. If the cycle feels big, the requirement was to
 
 ### Framework cues
 
-- **C# / Unity (Unity Test Framework)** — EditMode-first per unity-testing; `[TestCase]` for multiple cases. Run headless: `bash <skills>/unity-testing/scripts/run-tests.sh EditMode "<Namespace.Class.Method>"` for the active cycle, full suite before commit; between edits, `bash <skills>/unity-conventions/scripts/compile-check.sh` is the fast "does it compile" gate. No property-based library is bundled — example-based tests.
+- **C# / Unity (Unity Test Framework)** — EditMode-first per unity-testing; `[TestCase]` for multiple cases. Run headless: `bash <skills>/unity-testing/scripts/run-tests.sh EditMode "<Namespace.Class.Method>"` for the active cycle, full suite before commit; between edits, `bash <skills>/unity-conventions/scripts/compile-check.sh` is the fast "does it compile" gate. No property-based library is bundled — example-based tests. (`<skills>` = this plugin's `skills/` directory that holds those skill folders; `./skills/` in the source repo.)
 - **Python (pytest)** — fixtures with explicit scopes, `pytest.mark.parametrize` for multiple cases, `hypothesis` for properties.
 - **JS/TS (Vitest/Jest)** — `vi.fn()` / `jest.fn()` mocks; `@testing-library/*` for components; `fast-check` for properties.
 - **Go** — table-driven tests with subtests via `t.Run(name, func(t *testing.T) {...})`; `t.Parallel()` where safe.
