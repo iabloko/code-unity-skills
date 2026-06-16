@@ -84,6 +84,15 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `unity-addressables` | Any runtime asset load — replaces `Resources.Load` and bare `[SerializeField]` prefab refs |
 | `unity-build` | Release-affecting changes — headless player build, Addressables content, IL2CPP/stripping |
 
+### LeoEcsLite (ecslite) skills (only when `com.leoecscommunity.ecslite` is in `manifest.json`)
+
+| Skill | When it applies |
+| --- | --- |
+| `ecslite-conventions` | Any C# using `Leopotam.EcsLite` — struct components, pool `ref` discipline, filters, entity lifecycle, `IEcsAutoReset`, DEBUG-vs-RELEASE |
+| `ecslite-systems` | Creating a system or the startup — lifecycle/teardown order, system groups, named worlds, `ecslite-di` injection, `DelHere`/`AddGroup`, host-DI bootstrap |
+| `ecslite-testing` | Any system-logic change — EditMode `[Test]` (build world → seed → `Run()` → assert), no PlayMode |
+| `ecslite-performance` | Any `Run` in a per-frame path — cache pools/filters, `ref` access, no-alloc loops, `EcsWorld.Config` capacities, RELEASE builds |
+
 ### Engineering skills (auto-activated when relevant; the principles apply to every code change)
 
 - `engineering-philosophy` — KISS, YAGNI, DRY, SOLID on every code decision.

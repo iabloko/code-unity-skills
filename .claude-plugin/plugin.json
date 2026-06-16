@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "unity-skills",
-  "version": "0.3.0",
-  "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), UniTask async, uGUI/TMP UI, testing (Unity Test Framework + headless CLI runner), performance, Addressables, DOTween Pro, UniRx, and editor scripting (Odin).",
+  "version": "0.4.0",
+  "description": "Unity-focused skills for Claude Code: conventions, architecture (Zenject/VContainer), UniTask async, uGUI/TMP UI, testing (Unity Test Framework + headless CLI runner), performance, Addressables, DOTween Pro, UniRx, editor scripting (Odin), and LeoEcsLite ECS (conventions, systems/DI, testing, performance).",
   "author": {
     "name": "Daniil",
     "url": "https://github.com/iabloko"
@@ -23,6 +23,9 @@
     "unitask",
     "ugui",
     "tmp",
-    "urp"
+    "urp",
+    "ecs",
+    "ecslite",
+    "leoecslite"
   ]
 }
