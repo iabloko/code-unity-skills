@@ -1,5 +1,5 @@
 ---
-purpose: Verbatim Claude-Code architect agent definition (originally model: opus)
+purpose: "Verbatim Claude-Code architect agent definition (originally model: opus)"
 ---
 
 # Original architect agent (Claude-Code, model class: opus)

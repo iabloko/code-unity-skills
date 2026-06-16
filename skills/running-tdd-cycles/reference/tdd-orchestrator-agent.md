@@ -1,5 +1,5 @@
 ---
-purpose: Verbatim Claude-Code tdd-orchestrator agent definition (originally model: opus)
+purpose: "Verbatim Claude-Code tdd-orchestrator agent definition (originally model: opus)"
 ---
 
 # Original tdd-orchestrator agent (Claude-Code, model class: opus)

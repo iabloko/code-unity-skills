@@ -1,5 +1,5 @@
 ---
-purpose: Verbatim Claude-Code test-automator agent definition (originally model: sonnet)
+purpose: "Verbatim Claude-Code test-automator agent definition (originally model: sonnet)"
 ---
 
 # Original test-automator agent (Claude-Code, model class: sonnet)
