@@ -39,6 +39,14 @@ Even within C# 9, **covariant return types and module initializers don't work** 
 - Booleans: prefix with `is/has/can/should` (`_isReady`, `HasTarget`).
 - Async methods returning `Task`/`UniTask`: suffix `Async`.
 
+## Comments
+
+**Do not write comments — neither XML doc (`///` / `/** */`) nor inline (`//` / `/* */`).** Code must read on its own: express intent through precise names, small methods, and well-named types. A comment that feels necessary is a signal to rename or extract a method instead, not to annotate.
+
+- This includes `///` `<summary>` blocks on public members — omit them.
+- When editing existing code, do not add comments; you may leave pre-existing ones untouched (removing them is a separate, unrequested change — see Surgical Changes).
+- Not comments, so allowed: `#region`, `#pragma`, `#if` directives, and attribute usage. Add `// TODO` / `// HACK` only when the user explicitly asks for them.
+
 ## File / assembly layout
 
 - One public type per file; file name = type name.
@@ -88,6 +96,7 @@ Locates the editor the same way as `run-tests.sh` (`ProjectVersion.txt` + Hub pa
 - Prefer `[SerializeField] private T _field;` over `public T field;`.
 - For data classes that need to be serialized but aren't `UnityEngine.Object`, mark them `[Serializable]`.
 - Use `[field: SerializeField]` for auto-property backing fields when an immutable public surface is wanted.
+- **When Odin is present, never use `[Header]` for inspector layout** — use Odin grouping/labelling instead (`[Title]`, `[BoxGroup]`, `[FoldoutGroup]`, `[PropertySpace]`, `[LabelText]`). The same goes for `[Space]`/`[Tooltip]` layout — prefer the Odin equivalents. `[Header]` is acceptable only when Odin is absent. See [[unity-editor-scripting]].
 
 ## Coroutines vs async (default: UniTask)
 
@@ -135,5 +144,7 @@ Locates the editor the same way as `run-tests.sh` (`ProjectVersion.txt` + Hub pa
 - [ ] New configurable values live in a `ScriptableObject`, not as hard-coded literals.
 - [ ] New scripts live in the correct `*.asmdef` (editor-only code is not pulled into runtime).
 - [ ] No new `public` field exists solely for Inspector exposure — use `[SerializeField] private`.
+- [ ] No comments added — neither `///` doc blocks nor inline `//`.
+- [ ] When Odin is present, no `[Header]` used — Odin grouping/labelling attributes instead.
 - [ ] No `Debug.Log` left in hot paths.
 - [ ] Every added/renamed/deleted path under `Assets/` has its `.meta` change paired — `check-meta.sh` passes.

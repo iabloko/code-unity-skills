@@ -31,6 +31,7 @@ If Odin is absent, fall back to plain `UnityEditor` APIs. **Do not add Odin as a
 
 ### Layout & conditional UI
 
+- **Never use `[Header]` when Odin is present** — use `[Title]` for section headers, `[PropertySpace]` for spacing, `[LabelText]` to rename a field's label. (Likewise prefer Odin over `[Space]`/`[Tooltip]` for layout.)
 - `[BoxGroup]`, `[FoldoutGroup]`, `[TabGroup]` — group related fields. Use sparingly; flat is fine.
 - `[ShowIf]` / `[HideIf]` / `[EnableIf]` — conditional display based on another field's value. Reference fields by string name; if the name changes, the attribute silently breaks — prefer `nameof(field)`.
 - `[InfoBox("...", InfoMessageType.Warning)]` — surface constraints to designers.
@@ -136,6 +137,7 @@ Anything that mutates a scene or asset in the editor must:
 
 ## Anti-patterns
 
+- Using `[Header]` (or `[Space]`/`[Tooltip]` for layout) when Odin is present instead of `[Title]` / `[PropertySpace]` / `[LabelText]`.
 - Writing custom `OnInspectorGUI` when Odin is present and a single `[Button]` / `[ShowIf]` would do.
 - Editor code mixed into runtime MonoBehaviours without `#if UNITY_EDITOR` — breaks Player builds.
 - Calling `AssetDatabase.Refresh()` on every change — expensive; batch.
@@ -146,5 +148,6 @@ Anything that mutates a scene or asset in the editor must:
 - [ ] Editor file is in an `Editor/` folder with editor-only `*.asmdef`.
 - [ ] Runtime assemblies have no reference to editor assemblies.
 - [ ] If Odin is present, used Odin attributes instead of custom `OnInspectorGUI` where applicable.
+- [ ] If Odin is present, no `[Header]` used — `[Title]` / `[PropertySpace]` / `[LabelText]` instead.
 - [ ] All mutations route through `Undo.RecordObject` + `EditorUtility.SetDirty`.
 - [ ] No `AssetDatabase.SaveAssets` in a tight loop.
