@@ -83,6 +83,10 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 | `unity-unirx` | Reactive state binding or streams — only when UniRx is confirmed in `manifest.json` |
 | `unity-addressables` | Any runtime asset load — replaces `Resources.Load` and bare `[SerializeField]` prefab refs |
 | `unity-build` | Release-affecting changes — headless player build, Addressables content, IL2CPP/stripping |
+| `unity-yaml-assets` | Editing `.unity`/`.prefab`/`.asset` as text — fileID/GUID wiring, hand-edit vs editor-script ladder |
+| `unity-mcp-workflow` | Unity MCP server available or editor holds the project — Console/tests/refresh through the running editor |
+| `unity-input` | Any player input — new Input System action maps, callbacks vs polling, rebinding, `IInputSource` seam |
+| `unity-save` | Any persistence — versioned save DTOs, atomic writes, migrations; PlayerPrefs for settings only |
 
 ### LeoEcsLite (ecslite) skills (only when `com.leoecscommunity.ecslite` is in `manifest.json`)
 
@@ -96,6 +100,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ### Engineering skills (auto-activated when relevant; the principles apply to every code change)
 
 - `engineering-philosophy` — KISS, YAGNI, DRY, SOLID on every code decision.
+- `debugging-discipline` — reproduce → evidence → one hypothesis at a time → root-cause fix; instrumentation removed before commit.
 - `shell-discipline` — safe shell usage (PowerShell or bash): one command per call, no inline env vars.
 - `committing-changes` — no direct pushes to `main`, always feature branch + PR.
 - `running-tdd-cycles` — red→green→refactor discipline on every logic change.

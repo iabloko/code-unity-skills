@@ -7,7 +7,7 @@ description: Write Unity Editor extensions — custom inspectors, EditorWindow, 
 
 Editor code is a separate world from runtime code: different assembly, different platform restrictions, different APIs. Treat it as such.
 
-Pair with [[unity-conventions]] (assembly layout) and [[unity-architecture]] (don't bleed editor code into domain).
+ТPair with [[unity-conventions]] (assembly layout), [[unity-architecture]] (don't bleed editor code into domain), and [[unity-yaml-assets]] (structural changes to serialized assets go through an editor script, not hand-written YAML).
 
 ## Detect first — Odin Inspector
 

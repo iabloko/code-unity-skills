@@ -173,7 +173,7 @@ Raw CLI equivalent, when the script doesn't fit:
 
 - **Never pass `-quit` together with `-runTests`** — it kills the editor before tests finish.
 - `-testResults` / `-logFile` must be **absolute** paths.
-- One editor instance per project: a present `Temp/UnityLockfile` means the editor (or another batch run) has the project open — the run fails immediately. Ask the user to close the editor; after a crash the lockfile may be stale.
+р- One editor instance per project: a present `Temp/UnityLockfile` means the editor (or another batch run) has the project open — the run fails immediately. Run the tests through the editor instead when a Unity MCP server is available ([[unity-mcp-workflow]]); otherwise ask the user to close the editor. After a crash the lockfile may be stale.
 - Compile errors abort before any test runs: no results XML, nonzero exit — look for `error CS` in the log, fix, rerun.
 - First batch launch after asset changes triggers an import — allow a generous timeout (up to ~10 min on large projects); don't kill the process early.
 - `-testFilter` matches full names (`Namespace.Class.Method`; semicolon-separated; regex supported), `-testCategory` matches `[Category]` attributes. Filtered runs keep the red-green loop fast; always finish with the **full suite** before committing.

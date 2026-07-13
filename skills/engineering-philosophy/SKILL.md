@@ -20,7 +20,7 @@ description: Apply KISS, YAGNI, DRY, SOLID, fail-fast, be-brief on every code de
 - **Use Libraries** — Prefer established libraries (ORMs, validators, parsers) over reimplementing features. Check the ecosystem before writing custom code.
 - **Backwards Compatibility** — Don't keep code for backwards-compatibility purposes.
 - **CI** — Automate all possible quality checks.
-- **Investigate, Don't Mask** — When a check fails or unexpected behaviour occurs, investigate the root cause instead of adding defensive code to mask the symptom.
+- **Investigate, Don't Mask** — When a check fails or unexpected behaviour occurs, investigate the root cause instead of adding defensive code to mask the symptom. The procedure lives in `debugging-discipline`.
 - **Fail Fast** — Detect and surface errors immediately at the point of failure. Use assertions, strict validation, and early returns.
 - **Be Brief** — Imperative output. No preamble, no recap, no restating the task back. Compress *response prose*, never *operational checklists*: keep every named rule, severity word, sub-check, and category from the active skill verbatim — cut the explanation around them, not the rule itself. Applies to chat replies, commit messages, PR bodies, review findings, and any other text the agent emits.
 

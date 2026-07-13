@@ -56,7 +56,7 @@ Even within C# 9, **covariant return types and module initializers don't work** 
 
 ## `.meta` hygiene
 
-Every file and folder under `Assets/` has a paired `.meta` holding its GUID; all asset references resolve by GUID. Agents editing the project outside the Unity editor are the main source of `.meta` drift.
+ Every file and folder under `Assets/` has a paired `.meta` holding its GUID; all asset references resolve by GUID. Agents editing the project outside the Unity editor are the main source of `.meta` drift. Editing the serialized YAML itself (`.unity`/`.prefab`/`.asset`) has its own rules — see [[unity-yaml-assets]].
 
 - Commit an asset and its `.meta` **together** — including the `.meta` of every new folder on the path.
 - Deleting or renaming an asset deletes/renames its `.meta` in the same change. A leftover `.meta` is an orphan; a missing one regenerates with a **new GUID** on next editor open, silently breaking every reference to the old one.
@@ -79,7 +79,7 @@ The fastest feedback loop after editing C# — no tests, just a script-compilati
 bash <skills>/unity-conventions/scripts/compile-check.sh    # from the Unity project root
 ```
 
-Locates the editor the same way as `run-tests.sh` (`ProjectVersion.txt` + Hub paths, `UNITY_PATH` override), refuses to run while the editor has the project open, and prints deduplicated `error CS*` lines on failure. Exit `0` = compiles clean. Side effect: imports new assets and generates their `.meta` files — run it after creating files outside the editor, then commit the asset+`.meta` pairs. Use it between edits; escalate to the full test run ([[unity-testing]]) before declaring a change done.
+Locates the editor the same way as `run-tests.sh` (`ProjectVersion.txt` + Hub paths, `UNITY_PATH` override), refuses to run while the editor has the project open (verify through the running editor instead — [[unity-mcp-workflow]]), and prints deduplicated `error CS*` lines on failure. Exit `0` = compiles clean. Side effect: imports new assets and generates their `.meta` files — run it after creating files outside the editor, then commit the asset+`.meta` pairs. Use it between edits; escalate to the full test run ([[unity-testing]]) before declaring a change done.
 
 ## MonoBehaviour
 

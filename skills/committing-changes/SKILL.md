@@ -83,6 +83,7 @@ Each rule traces to a specific failure mode:
 
 - `shell-discipline` — issue these `git`/`gh` commands one per call, no `&&` chains.
 - `engineering-philosophy` — "Small Steps" and "Investigate, Don't Mask" map directly to one-logical-change-per-commit and don't-disable-failing-hooks.
+ - `unity-yaml-assets` — fileID/GUID anatomy when a scene/prefab/asset conflict must be inspected by hand after SmartMerge fails.
 
 ## Reference
 

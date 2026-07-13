@@ -26,10 +26,14 @@ Unity-focused skills for [Claude Code](https://claude.com/claude-code): conventi
 | `unity-addressables` | Runtime asset loading via Addressables instead of `Resources.Load` |
 | `unity-dotween` | DOTween Pro tweens, sequences, UniTask integration |
 | `unity-unirx` | UniRx reactive streams — only when the project already depends on it |
+| `unity-yaml-assets` | Editing `.unity`/`.prefab`/`.asset` YAML as text — fileID/GUID reference wiring, hand-edit vs editor-script ladder |
+| `unity-mcp-workflow` | Verifying through a running editor via Unity MCP — refresh, Console, tests; headless scripts when it's closed |
+| `unity-input` | New Input System — action maps, callbacks vs polling, rebinding, `IInputSource` seam |
+| `unity-save` | Persistence — versioned save DTOs, atomic writes with backup, migrations; PlayerPrefs for settings only |
 
 ### Engineering skills
 
-`engineering-philosophy`, `shell-discipline`, `committing-changes` (feature branch + PR + git hooks), `running-tdd-cycles`, `reviewing-changes` (five-pass review), `designing-architecture`.
+`engineering-philosophy`, `debugging-discipline` (root-cause loop: reproduce → hypothesis → fix, never mask), `shell-discipline`, `committing-changes` (feature branch + PR + git hooks), `running-tdd-cycles`, `reviewing-changes` (five-pass review), `designing-architecture`.
 
 ### Recommended pairing: a Unity MCP server
 

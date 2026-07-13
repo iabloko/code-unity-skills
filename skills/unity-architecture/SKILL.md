@@ -52,7 +52,7 @@ Presentation← MonoBehaviours, UI Toolkit / uGUI, ScriptableObject configs
 Rules:
 
 - Domain must compile in a non-Unity project (no `UnityEngine.*`, no `Object`-derived bases).
-- Application defines **interfaces** (`IInputSource`, `ISaveStore`, `ITimeProvider`); Presentation implements them.
+- Application defines **interfaces** (`IInputSource`, `ISaveStore`, `ITimeProvider`); Presentation implements them — the input and persistence implementations follow [[unity-input]] and [[unity-save]].
 - Presentation depends inward only — Domain never `using`s Presentation.
 - Cross-layer wiring lives in the DI installer, not in constructors of unrelated classes.
 

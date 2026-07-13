@@ -89,6 +89,7 @@ Never use inline heredocs (`uv run python << EOF`, `go run -`, `forge script --v
 
 - `committing-changes` — commit after every successful GREEN or REFACTOR phase.
 - `reviewing-changes` — final pass after the loop ends.
+- `debugging-discipline` — when a test fails for an unclear reason, switch to the root-cause loop instead of tweaking code until green.
 - `unity-testing` — C#/Unity test-runner setup (EditMode vs PlayMode, asmdef layout, headless CLI).
 - `python-conventions` / `go-conventions` / `solidity-conventions` (separate coding-skills plugin) — other languages' test runner setup.
 - `engineering-philosophy` — Small Steps, Investigate-Don't-Mask, KISS, YAGNI all apply directly.
