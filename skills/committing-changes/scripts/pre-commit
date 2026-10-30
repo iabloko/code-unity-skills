@@ -8,6 +8,18 @@ set -e
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
+# ── NOCOMMIT gate (all stacks) ─────────────────────────────────────────────
+# Any staged non-markdown file containing the marker blocks the commit.
+# Mark temporary hacks with `// NOCOMMIT` and they can never reach a branch.
+MARKER='NO''COMMIT'   # split so this hook never trips on itself
+HITS="$(git diff --cached --name-only --diff-filter=ACMR -z -- . ':!*.md' \
+    | xargs -0 -r git grep --cached -n "$MARKER" -- 2>/dev/null || true)"
+if [[ -n "$HITS" ]]; then
+    echo "✗ $MARKER markers staged — remove the temporary code (or the marker, deliberately) first:"
+    echo "$HITS" | sed 's/^/    /'
+    exit 1
+fi
+
 # ── Unity ──────────────────────────────────────────────────────────────────
 # Gate staged .meta pairing only (fast, scoped to this commit). The full-tree
 # audit lives in unity-conventions/scripts/check-meta.sh.
